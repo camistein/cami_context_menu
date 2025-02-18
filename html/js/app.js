@@ -8,8 +8,7 @@ CAMI_MENU.positionX = 50
 CAMI_MENU.positionY = 50;
 CAMI_MENU.pageStartIndex = 0;
 CAMI_MENU.current = []
-CAMI_MENU.back = []
-CAMI_MENU.pageEndIndex = CAMI_MENU.maxItemsPer - 1;
+CAMI_MENU.currentBack = ""
 
 Handlebars.registerHelper("inc", function(value, options)
 {
@@ -127,6 +126,7 @@ CAMI_MENU.onBack = function(backIndexes) {
     CAMI_MENU.current = options;
 
     if(!!item) {
+        CAMI_MENU.currentBack = item.back;
         if(options.length > CAMI_MENU.maxItemsPer) {
             let chunk = options.slice(0, CAMI_MENU.maxItemsPer - 1)
             CAMI_MENU.renderMenuItems(chunk,0, true, CAMI_MENU.maxItemsPer - 1, item.back)
@@ -154,10 +154,10 @@ CAMI_MENU.onClick = function(index, isLoadmore) {
             let options = CAMI_MENU.current.slice(start, end)
 
             if(end > CAMI_MENU.current.length) {
-                CAMI_MENU.renderMenuItems(options, start ,true, 0)
+                CAMI_MENU.renderMenuItems(options, start ,true, 0, CAMI_MENU.currentBack)
             }
             else {
-                CAMI_MENU.renderMenuItems(options, start ,true, end)
+                CAMI_MENU.renderMenuItems(options, start ,true, end, CAMI_MENU.currentBack)
             }
            
         }
@@ -175,6 +175,8 @@ CAMI_MENU.onClick = function(index, isLoadmore) {
                     else {
                         CAMI_MENU.renderMenuItems(item.options, 0, false, 0, item.back)
                     }
+
+                    CAMI_MENU.currentBack = item.back
                 }
                 else {
                     CAMI_MENU.selectItem(item)
