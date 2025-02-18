@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="css/app.css" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="menu-container">
+            <div id="menu" class="menu"></div>
+        </div>
+        <script id="menu-template" type="text/x-handlebars-template">
+                <div class="menu__content">
+                    <div class="menu__content__items">
+                       {{{content}}}
+                    </div>
+                </div>
+          </script>
+
+          <script id="menu-item-template" type="text/x-handlebars-template">
+            {{#if loadMore}}
+                <div class="menu__item menu__item--loadmore" onclick="CAMI_MENU.onClick('{{index}}', '{{loadMore}}')"> 
+                    <div class="menu__item__content" tabindex="0">
+                        {{text}}
+                    </div>
+                </div>
+            {{else}}
+                <div class="menu__item">
+                    <div class="menu__item__content" tabindex="{{inc index}}"  onclick="CAMI_MENU.onClick('{{index}}', '{{loadMore}}')">
+                        {{#if color}}
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="5" cy="5" r="5" fill="{{color}}" />
+                            </svg>
+                        {{/if}}
+                        <span>
+                            {{text}}
+                            {{#if options}}
+                                ...
+                            {{/if}}
+                        </span>
+                    </div>
+                </div>
+            {{/if}}
+          </script>
+          <script id="menu-back-template" type="text/x-handlebars-template">
+            <div class="menu__item__back">
+                <div onclick="CAMI_MENU.onBack('{{this}}')">
+                    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><polyline points="328 112 184 256 328 400" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"/></svg>
+                    <span>Back</span>
+                </div>
+        </div>
+          </script>
+        <script src="js/handlebars.min.js" type="text/javascript"></script>
+        <script src="js/app.js" type="text/javascript"></script>
+    </body>
+</html>
