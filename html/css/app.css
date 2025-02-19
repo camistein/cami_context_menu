@@ -64,7 +64,7 @@ body {
   grid-row-end: 3;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .menu__item__back div {
