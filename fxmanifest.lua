@@ -11,6 +11,7 @@ legacyversion '1.9.1'
 shared_scripts {
 	'@es_extended/imports.lua',
 	'@es_extended/locale.lua',
+	'config.lua'
 }
 
 client_scripts {

@@ -20,17 +20,17 @@
 
           <script id="menu-item-template" type="text/x-handlebars-template">
             {{#if loadMore}}
-                <div class="menu__item menu__item--loadmore" onclick="CAMI_MENU.onClick('{{index}}', '{{loadMore}}')"> 
+                <div class="menu__item menu__item--loadmore menu__item--transition" onclick="CAMI_MENU.onClick('{{index}}', '{{loadMore}}')"> 
                     <div class="menu__item__content" tabindex="0">
                         {{text}}
                     </div>
                 </div>
             {{else}}
-                <div class="menu__item">
+                <div class="menu__item menu__item--transition">
                     <div class="menu__item__content" tabindex="{{inc index}}"  onclick="CAMI_MENU.onClick('{{index}}', '{{loadMore}}')">
                         {{#if color}}
-                            <svg xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="5" cy="5" r="5" fill="{{color}}" />
+                            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="10" cy="10" r="10" fill="{{color}}" />
                             </svg>
                         {{/if}}
                         <span>
@@ -44,10 +44,10 @@
             {{/if}}
           </script>
           <script id="menu-back-template" type="text/x-handlebars-template">
-            <div class="menu__item__back">
-                <div onclick="CAMI_MENU.onBack('{{this}}')">
+            <div class="menu__item__back menu__item--transition">
+                <div onclick="CAMI_MENU.onBack('{{index}}')">
                     <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><polyline points="328 112 184 256 328 400" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"/></svg>
-                    <span>Back</span>
+                    <span>{{text}}</span>
                 </div>
         </div>
           </script>
