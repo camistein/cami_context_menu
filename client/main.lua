@@ -29,7 +29,7 @@ function OpenMenu(namespace, name, menuItems, x, y, onclose)
 
     SetNuiFocus(true, true)
     SetNuiFocusKeepInput(true)
-    SetCursorLocation(x, y)
+    SetCursorLocation(x, y - 0.1)
     SendNUIMessage(openData)
 end
 
