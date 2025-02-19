@@ -26,7 +26,7 @@ CAMI_MENU.open = function(options, x, y) {
     CAMI_MENU.setupBackIndexes(CAMI_MENU.options)
     CAMI_MENU.initMenu();
     document.onkeydown = function(event) {
-        if(event.key == 'Escape' || event.key == 'Alt') {
+        if(event.key == 'Escape') {
             CAMI_MENU.close()
         }
     }
