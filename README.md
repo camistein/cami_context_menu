@@ -1,19 +1,19 @@
 ## Functions
 
-exports.cami_menu:openMenu
+exports.scriptstorm_contextmenu:openMenu
 
 Open new menu
 
 **Parameters**
+
 - namespace : namespace caller
 - name : name of menu
 - options : table with selectItem's types, for example of item see selectItem section.
 - x : x position on screen (percentage, 0.5 for 50%)
 - y : y position on screen (percentage, 0.5 for 50%)
 
-
 ```
-    exports.cami_menu:openMenu("vehicle_menu", "action_menu", {
+    exports.scriptstorm_contextmenu:openMenu("vehicle_menu", "action_menu", {
         {
             text = "Engine " .. (engineStatus and "OFF" or "ON"),
             color = (engineStatus and "#ff0000" or "#00b816"),
@@ -59,18 +59,19 @@ Open new menu
     }, 0.52, 0.52)
 ```
 
-exports.cami_menu:closeMenu
+exports.scriptstorm_contextmenu:closeMenu
 
 Used to close menu outside of pressing ESC
 
 **Parameters**
+
 - namespace : namespace caller
 - name : name of menu
 
-
-## Example selectItem 
+## Example selectItem
 
 Example with submit funtion
+
 ```
  {
             text = "Engine " .. (engineStatus and "OFF" or "ON"),
@@ -84,6 +85,7 @@ Example with submit funtion
 ```
 
 Example with options
+
 ```
 {
     text = "Action 8.4",
@@ -99,11 +101,13 @@ Example with options
 ```
 
 ### Optional properties:
-- **event | onSubmit**: An option item can either have an event name or connected onSubmit function to trigger when selecting an item, you do not need both. 
+
+- **event | onSubmit**: An option item can either have an event name or connected onSubmit function to trigger when selecting an item, you do not need both.
 - **color**: An item can have an optional color property as well if
 - **options**: if item is expandable then a selectItem can have child options, this item is then considered non selectable and cannot be combined with onSubmit and even it will only expand more options that are selectable.
 
 ## Demo
+
 https://www.youtube.com/watch?v=JbYPaesHJHg
 
 ## Todo

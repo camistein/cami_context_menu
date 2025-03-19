@@ -1,42 +1,42 @@
  (function() {
-    window.CAMI_MENU = {};
+    window.SCRIPTSTORM_CONTEXTMENU = {};
 
-CAMI_MENU.translations = {}    
-CAMI_MENU.ResourceName = "cami_menu";
-CAMI_MENU.options = []
-CAMI_MENU.name = ""
-CAMI_MENU.currentOptions = []
-CAMI_MENU.maxItemsPer = 8
-CAMI_MENU.positionX = 50
-CAMI_MENU.positionY = 50;
-CAMI_MENU.pageStartIndex = 0;
-CAMI_MENU.currentBackIndex = ""
-CAMI_MENU.currentBackItem = undefined
+SCRIPTSTORM_CONTEXTMENU.translations = {}    
+SCRIPTSTORM_CONTEXTMENU.ResourceName = "scriptstorm_contextmenu";
+SCRIPTSTORM_CONTEXTMENU.options = []
+SCRIPTSTORM_CONTEXTMENU.name = ""
+SCRIPTSTORM_CONTEXTMENU.currentOptions = []
+SCRIPTSTORM_CONTEXTMENU.maxItemsPer = 8
+SCRIPTSTORM_CONTEXTMENU.positionX = 50
+SCRIPTSTORM_CONTEXTMENU.positionY = 50;
+SCRIPTSTORM_CONTEXTMENU.pageStartIndex = 0;
+SCRIPTSTORM_CONTEXTMENU.currentBackIndex = ""
+SCRIPTSTORM_CONTEXTMENU.currentBackItem = undefined
 
 Handlebars.registerHelper("inc", function(value, options)
 {
     return parseInt(value) + 1;
 });
 
-CAMI_MENU.open = function(options, x, y) {
-    CAMI_MENU.options = options; 
-    CAMI_MENU.positionX = x;
-    CAMI_MENU.positionY = y;
+SCRIPTSTORM_CONTEXTMENU.open = function(options, x, y) {
+    SCRIPTSTORM_CONTEXTMENU.options = options; 
+    SCRIPTSTORM_CONTEXTMENU.positionX = x;
+    SCRIPTSTORM_CONTEXTMENU.positionY = y;
 
-    CAMI_MENU.setupBackIndexes(CAMI_MENU.options)
-    CAMI_MENU.initMenu();
+    SCRIPTSTORM_CONTEXTMENU.setupBackIndexes(SCRIPTSTORM_CONTEXTMENU.options)
+    SCRIPTSTORM_CONTEXTMENU.initMenu();
     document.onkeydown = function(event) {
         if(event.key == 'Escape') {
-            CAMI_MENU.close()
+            SCRIPTSTORM_CONTEXTMENU.close()
         }
     }
 }
 
-CAMI_MENU.close = function () {
-    delete CAMI_MENU.options;
-    delete CAMI_MENU.currentOptions;
+SCRIPTSTORM_CONTEXTMENU.close = function () {
+    delete SCRIPTSTORM_CONTEXTMENU.options;
+    delete SCRIPTSTORM_CONTEXTMENU.currentOptions;
     try {
-        fetch(`http://${CAMI_MENU.ResourceName}/menu_close`, {
+        fetch(`http://${SCRIPTSTORM_CONTEXTMENU.ResourceName}/menu_close`, {
             method: 'POST',
         }).catch((err) => console.warn(err))
     }
@@ -44,15 +44,15 @@ CAMI_MENU.close = function () {
         console.warn(err)
     }
 
-    CAMI_MENU.initMenu();
+    SCRIPTSTORM_CONTEXTMENU.initMenu();
 }
 
-CAMI_MENU.setupBackIndexes = function(items, backIndex) {
+SCRIPTSTORM_CONTEXTMENU.setupBackIndexes = function(items, backIndex) {
     if(items) {
         items.forEach((item, index) => {
             if(item.options) {
                 item.backIndex = backIndex ? backIndex : "[root]" ;
-                CAMI_MENU.setupBackIndexes(item.options, `${backIndex ? `${backIndex}.` : "[root]." }${index}`)
+                SCRIPTSTORM_CONTEXTMENU.setupBackIndexes(item.options, `${backIndex ? `${backIndex}.` : "[root]." }${index}`)
             }
             else {
                 item.backIndex = backIndex;
@@ -61,35 +61,35 @@ CAMI_MENU.setupBackIndexes = function(items, backIndex) {
     }
 }
 
-CAMI_MENU.initMenu = function () {
+SCRIPTSTORM_CONTEXTMENU.initMenu = function () {
 
-    CAMI_MENU.setupBackIndexes(CAMI_MENU.options)
-    CAMI_MENU.currentOptions = CAMI_MENU.options;
+    SCRIPTSTORM_CONTEXTMENU.setupBackIndexes(SCRIPTSTORM_CONTEXTMENU.options)
+    SCRIPTSTORM_CONTEXTMENU.currentOptions = SCRIPTSTORM_CONTEXTMENU.options;
 
-    if(CAMI_MENU.currentOptions && CAMI_MENU.currentOptions.length > CAMI_MENU.maxItemsPer) {
-        let items = CAMI_MENU.currentOptions.slice(0, CAMI_MENU.maxItemsPer - 1)
-        CAMI_MENU.renderMenuItems(items, 0 , true, CAMI_MENU.maxItemsPer - 1)
+    if(SCRIPTSTORM_CONTEXTMENU.currentOptions && SCRIPTSTORM_CONTEXTMENU.currentOptions.length > SCRIPTSTORM_CONTEXTMENU.maxItemsPer) {
+        let items = SCRIPTSTORM_CONTEXTMENU.currentOptions.slice(0, SCRIPTSTORM_CONTEXTMENU.maxItemsPer - 1)
+        SCRIPTSTORM_CONTEXTMENU.renderMenuItems(items, 0 , true, SCRIPTSTORM_CONTEXTMENU.maxItemsPer - 1)
     }
     else {
-        CAMI_MENU.renderMenuItems(CAMI_MENU.options, 0)
+        SCRIPTSTORM_CONTEXTMENU.renderMenuItems(SCRIPTSTORM_CONTEXTMENU.options, 0)
     }
 
     let menuContainer = document.querySelectorAll("#menu")[0];
-    menuContainer.style.left = CAMI_MENU.positionX * 100 + "%";
-    menuContainer.style.top = CAMI_MENU.positionX * 100 + "%";
+    menuContainer.style.left = SCRIPTSTORM_CONTEXTMENU.positionX * 100 + "%";
+    menuContainer.style.top = SCRIPTSTORM_CONTEXTMENU.positionX * 100 + "%";
     menuContainer.style.marginLeft = "-" + (menuContainer.clientWidth / 2) + "px";
     menuContainer.style.marginTop = "-" + (menuContainer.clientHeight / 2) + "px";
 }
 
-CAMI_MENU.selectItem = function (item, index) {
-    delete CAMI_MENU.options;
-    delete CAMI_MENU.currentOptions;
+SCRIPTSTORM_CONTEXTMENU.selectItem = function (item, index) {
+    delete SCRIPTSTORM_CONTEXTMENU.options;
+    delete SCRIPTSTORM_CONTEXTMENU.currentOptions;
 
     try {
-        fetch(`http://${CAMI_MENU.ResourceName}/menu_select`, {
+        fetch(`http://${SCRIPTSTORM_CONTEXTMENU.ResourceName}/menu_select`, {
             method: 'POST',
             body: JSON.stringify({
-                name: CAMI_MENU.name,
+                name: SCRIPTSTORM_CONTEXTMENU.name,
                 item: {
                     index,
                     event: item.event,
@@ -102,21 +102,21 @@ CAMI_MENU.selectItem = function (item, index) {
         console.warn(err)
     }
 
-    CAMI_MENU.initMenu();
+    SCRIPTSTORM_CONTEXTMENU.initMenu();
 }
 
-CAMI_MENU.onBack = function(backIndexes) {
-    let options = CAMI_MENU.options;
+SCRIPTSTORM_CONTEXTMENU.onBack = function(backIndexes) {
+    let options = SCRIPTSTORM_CONTEXTMENU.options;
     let item = options[0];
 
     if(backIndexes && backIndexes.length > 0) {
         if(backIndexes.indexOf('.') > -1) {
             let indexes = backIndexes.split('.')
             if(indexes) {
-                options = CAMI_MENU.options
+                options = SCRIPTSTORM_CONTEXTMENU.options
                 indexes.forEach((currentIndex) => {
                     if(currentIndex.indexOf('root') > -1) {
-                        options = CAMI_MENU.options
+                        options = SCRIPTSTORM_CONTEXTMENU.options
                     }
                     else {
                         let index = parseInt(currentIndex.replace('.'))
@@ -132,88 +132,88 @@ CAMI_MENU.onBack = function(backIndexes) {
         }
         else {
             if(backIndexes === "[root]") {
-                options = CAMI_MENU.options
+                options = SCRIPTSTORM_CONTEXTMENU.options
             }
             else {
                 let index = parseInt(backIndexes)
-                if(CAMI_MENU.options[index] && CAMI_MENU.options[index].options) {
-                    item = CAMI_MENU.options[index];
-                    options = CAMI_MENU.options[index].options;
+                if(SCRIPTSTORM_CONTEXTMENU.options[index] && SCRIPTSTORM_CONTEXTMENU.options[index].options) {
+                    item = SCRIPTSTORM_CONTEXTMENU.options[index];
+                    options = SCRIPTSTORM_CONTEXTMENU.options[index].options;
                 }
             }
         }
     }
     else {
-        options = CAMI_MENU.options
+        options = SCRIPTSTORM_CONTEXTMENU.options
     }
 
-    CAMI_MENU.currentOptions = options;
+    SCRIPTSTORM_CONTEXTMENU.currentOptions = options;
 
     if(!!item) {
-        CAMI_MENU.currentBackIndex = item.backIndex;
-        CAMI_MENU.currentBackItem = item;
+        SCRIPTSTORM_CONTEXTMENU.currentBackIndex = item.backIndex;
+        SCRIPTSTORM_CONTEXTMENU.currentBackItem = item;
 
-        if(options.length > CAMI_MENU.maxItemsPer) {
-            let chunk = options.slice(0, CAMI_MENU.maxItemsPer - 1)
-            CAMI_MENU.renderMenuItems(chunk,0, true, CAMI_MENU.maxItemsPer - 1, item.backIndex)
+        if(options.length > SCRIPTSTORM_CONTEXTMENU.maxItemsPer) {
+            let chunk = options.slice(0, SCRIPTSTORM_CONTEXTMENU.maxItemsPer - 1)
+            SCRIPTSTORM_CONTEXTMENU.renderMenuItems(chunk,0, true, SCRIPTSTORM_CONTEXTMENU.maxItemsPer - 1, item.backIndex)
         }
         else {
-            CAMI_MENU.renderMenuItems(options,0, false, 0,item.backIndex)
+            SCRIPTSTORM_CONTEXTMENU.renderMenuItems(options,0, false, 0,item.backIndex)
         }
     }
     else {
-        if(options.length > CAMI_MENU.maxItemsPer) {
-            let chunk = options.slice(0, CAMI_MENU.maxItemsPer - 1)
-            CAMI_MENU.renderMenuItems(chunk,0, true, CAMI_MENU.maxItemsPer - 1)
+        if(options.length > SCRIPTSTORM_CONTEXTMENU.maxItemsPer) {
+            let chunk = options.slice(0, SCRIPTSTORM_CONTEXTMENU.maxItemsPer - 1)
+            SCRIPTSTORM_CONTEXTMENU.renderMenuItems(chunk,0, true, SCRIPTSTORM_CONTEXTMENU.maxItemsPer - 1)
         }
         else {
-            CAMI_MENU.renderMenuItems(options,0, false, 0)
+            SCRIPTSTORM_CONTEXTMENU.renderMenuItems(options,0, false, 0)
         }
     }
 }
 
-CAMI_MENU.onClick = function(index, isLoadmore) {
-    if(CAMI_MENU.currentOptions) {
+SCRIPTSTORM_CONTEXTMENU.onClick = function(index, isLoadmore) {
+    if(SCRIPTSTORM_CONTEXTMENU.currentOptions) {
         if(isLoadmore) {
             let start = parseInt(index);
-            let end = start + (CAMI_MENU.maxItemsPer - 1);
-            let options = CAMI_MENU.currentOptions.slice(start, end)
+            let end = start + (SCRIPTSTORM_CONTEXTMENU.maxItemsPer - 1);
+            let options = SCRIPTSTORM_CONTEXTMENU.currentOptions.slice(start, end)
 
-            if(end > CAMI_MENU.currentOptions.length) {
-                CAMI_MENU.renderMenuItems(options, start ,true, 0, CAMI_MENU.currentBackIndex)
+            if(end > SCRIPTSTORM_CONTEXTMENU.currentOptions.length) {
+                SCRIPTSTORM_CONTEXTMENU.renderMenuItems(options, start ,true, 0, SCRIPTSTORM_CONTEXTMENU.currentBackIndex)
             }
             else {
-                CAMI_MENU.renderMenuItems(options, start ,true, end, CAMI_MENU.currentBackIndex)
+                SCRIPTSTORM_CONTEXTMENU.renderMenuItems(options, start ,true, end, SCRIPTSTORM_CONTEXTMENU.currentBackIndex)
             }
            
         }
         else {
             let itemIndex = parseInt(index)
-            if(CAMI_MENU.currentOptions[itemIndex]) {
-                let item = CAMI_MENU.currentOptions[itemIndex];
+            if(SCRIPTSTORM_CONTEXTMENU.currentOptions[itemIndex]) {
+                let item = SCRIPTSTORM_CONTEXTMENU.currentOptions[itemIndex];
                 if(item.options && item.options.length) {
-                    CAMI_MENU.currentOptions = item.options;
+                    SCRIPTSTORM_CONTEXTMENU.currentOptions = item.options;
 
-                    if(item.options.length > CAMI_MENU.maxItemsPer) {
-                        let options = CAMI_MENU.currentOptions.slice(0, CAMI_MENU.maxItemsPer - 1)
-                        CAMI_MENU.renderMenuItems(options, 0 ,true, CAMI_MENU.maxItemsPer, item.backIndex)
+                    if(item.options.length > SCRIPTSTORM_CONTEXTMENU.maxItemsPer) {
+                        let options = SCRIPTSTORM_CONTEXTMENU.currentOptions.slice(0, SCRIPTSTORM_CONTEXTMENU.maxItemsPer - 1)
+                        SCRIPTSTORM_CONTEXTMENU.renderMenuItems(options, 0 ,true, SCRIPTSTORM_CONTEXTMENU.maxItemsPer, item.backIndex)
                     }
                     else {
-                        CAMI_MENU.renderMenuItems(item.options, 0, false, 0, item.backIndex)
+                        SCRIPTSTORM_CONTEXTMENU.renderMenuItems(item.options, 0, false, 0, item.backIndex)
                     }
 
-                    CAMI_MENU.currentBackIndex = item.backIndex
-                    CAMI_MENU.currentBackItem = item
+                    SCRIPTSTORM_CONTEXTMENU.currentBackIndex = item.backIndex
+                    SCRIPTSTORM_CONTEXTMENU.currentBackItem = item
                 }
                 else {
-                    CAMI_MENU.selectItem(item, index)
+                    SCRIPTSTORM_CONTEXTMENU.selectItem(item, index)
                 }
             }
         }
     }
 }
 
-CAMI_MENU.renderMenuItems = function (items, startIndex = 0, hasLoadMore = false, loadMoreIndex = 0, backIndex) {
+SCRIPTSTORM_CONTEXTMENU.renderMenuItems = function (items, startIndex = 0, hasLoadMore = false, loadMoreIndex = 0, backIndex) {
     let menuContainer = document.querySelectorAll("#menu")[0];
     menuContainer.innerHTML = "";
 
@@ -233,7 +233,7 @@ CAMI_MENU.renderMenuItems = function (items, startIndex = 0, hasLoadMore = false
     var menucontent = ''
     if(hasLoadMore) {
         menucontent += menuItemTemplate({
-            text: ` ${CAMI_MENU.translations?.more ?? 'More'}..`, 
+            text: ` ${SCRIPTSTORM_CONTEXTMENU.translations?.more ?? 'More'}..`, 
             loadMore: true,
             index: loadMoreIndex
         })
@@ -250,7 +250,7 @@ CAMI_MENU.renderMenuItems = function (items, startIndex = 0, hasLoadMore = false
     }
 
     if(backIndex && backIndex.length) {
-        menucontent += menuBackTemplate({index: backIndex, text: CAMI_MENU.translations?.back ?? 'Back'})
+        menucontent += menuBackTemplate({index: backIndex, text: SCRIPTSTORM_CONTEXTMENU.translations?.back ?? 'Back'})
     }
 
     var menu = menuTemplate({ content: menucontent });
@@ -258,17 +258,17 @@ CAMI_MENU.renderMenuItems = function (items, startIndex = 0, hasLoadMore = false
 }
     window.onData = (data) => {
         if(data.translations) {
-            CAMI_MENU.translations = data.translations
+            SCRIPTSTORM_CONTEXTMENU.translations = data.translations
         }
 
         switch(data.action) {
             case "openMenu": {
-                CAMI_MENU.name = data.name;
-                CAMI_MENU.open(data.options, data.x, data.y);
+                SCRIPTSTORM_CONTEXTMENU.name = data.name;
+                SCRIPTSTORM_CONTEXTMENU.open(data.options, data.x, data.y);
                 break;
             }
             case "closeMenu": {
-                CAMI_MENU.close();
+                SCRIPTSTORM_CONTEXTMENU.close();
                 break;
             }
         }
