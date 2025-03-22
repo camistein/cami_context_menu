@@ -66,7 +66,6 @@ RegisterNUICallback('menu_select', function(data, cb)
                 if data.item.position ~= nil and data.item.position ~= "[root]" then 
                     local currentOptions = OpenedMenus[data.name].options
                     for word in string.gmatch(data.item.position, '([^.]+)') do
-                        Citizen.Trace(word .. " \n")
                         if word ~= "[root]" then
                             local index = tonumber(word)
                             if index ~= nil then
@@ -82,7 +81,6 @@ RegisterNUICallback('menu_select', function(data, cb)
                     if currentOptions ~= nil and currentOptions[itemIndex] ~= nil  then
                         local item = currentOptions[itemIndex]
                         if item and item.onSubmit then
-                            Citizen.Trace(item.text .. " found by index root \n")
                             item.onSubmit(data)
                         end
                     end
@@ -90,7 +88,6 @@ RegisterNUICallback('menu_select', function(data, cb)
                     local item =  OpenedMenus[data.name].options[itemIndex]
                     if item ~= nil then
                         if item.onSubmit ~= nil then
-                            Citizen.Trace(item.text .. " found by index only \n")
                             item.onSubmit(data)
                         end
                     end
